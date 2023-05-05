@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 
+from entity import User
 from models import BatchRequestSchema
 from utils import build_query
 
@@ -23,3 +24,15 @@ def perform_query():
         )
 
     return jsonify(result)
+
+
+@main_bp.route('/users')
+def get_users():
+    result = User.query.all()
+
+    return [
+        {
+            'id': user.id,
+            'username': user.username,
+        } for user in result
+    ]
